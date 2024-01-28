@@ -169,19 +169,19 @@ def read_args() -> str:
     )
 
     parser.add_argument('source', help="The markdown file to base the ToC on")
-    parser.add_argument('dest', default=args.source, help="The markdown file to insert the generated ToC in.")
+    parser.add_argument('dest', help="The markdown file to insert the generated ToC in.")
     args = parser.parse_args()
     
     # check for valid arguments
-    assert args.source.endswith(".md"), "The source file must be a markdown file"
-    assert args.dest.endswith(".md"), "The destination file must be a markdown file"
+    assert args.source.endswith(".md") and args.source != None, "The source file must be a markdown file"
+    assert args.dest.endswith(".md") and args.dest != None, "The destination file must be a markdown file"
 
     return args.source, args.dest
 
 
 
 if __name__ == "__main__":
-    #source_file, dest_file = read_args()
+    source_file, dest_file = read_args()
     markdown = get_markdown("sample.md")
     headings = get_headings(markdown)
     toc = generate_toc(headings)
