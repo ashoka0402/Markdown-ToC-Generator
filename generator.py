@@ -1,8 +1,7 @@
 import argparse
-import os
-from typing import Dict, Tuple
-from pathlib import Path
 import string
+from pathlib import Path
+from typing import Dict, Tuple
 
 
 def get_markdown(file_name: str) -> str:
@@ -14,7 +13,10 @@ def get_markdown(file_name: str) -> str:
     Returns:
         the contents of the `.md` file
     """
-    data = Path(file_name).read_text()
+    try:
+        data = Path(file_name).read_text()
+    except:
+        print("Markdown file could not be found or opened")
     return data
 
 
@@ -97,7 +99,7 @@ def generate_toc(headings: Dict[str, int]) -> str:
     Returns:
         the table of contents as a single string
     """
-    toc_text = ""
+    toc_text = "### Table of Contents\n"
     curr_indent = 0
 
     for heading, level in headings.items():
@@ -123,7 +125,36 @@ def generate_toc(headings: Dict[str, int]) -> str:
 
 
 
-def read_args() -> Tuple[str, str]:
+def insert_toc(toc_text: str, file_name: str) -> None:
+    """Insert the given table of contents in the file on
+    the line labelled "**MD-TOC**"
+
+    Args:
+        toc_text: the table of contents generated in string format
+        file_name: the file where the ToC is going
+    """
+    # Find where to insert toc
+    lines = get_markdown(file_name)
+    line_num = 1
+    
+    for line in lines.splitlines():
+        if line.startswith("**MD-TOC**"):
+            break
+        line_num += 1
+    
+    # Convert the string into a list of lines
+    lines = lines.splitlines()
+
+    # Insert the toc_text at the specified line number
+    lines[line_num-1:line_num] = toc_text.split('\n')
+
+    # Write the modified content back to the file
+    with open(file_name, 'w') as file:
+        file.write('\n'.join(lines))
+
+
+
+def read_args() -> str:
     """Read in the command-line arguments to determine the
     source and destination file
 
@@ -131,8 +162,21 @@ def read_args() -> Tuple[str, str]:
         a tuple where the first item is the source file location,
         and the second is the destination file location.
     """
-    files = tuple()
-    return files
+    # setup parser
+    parser = argparse.ArgumentParser(
+            prog='md-toc',
+            description='Generates a Table of Contents (ToC) for a markdown file',
+    )
+
+    parser.add_argument('source', help="The markdown file to base the ToC on")
+    parser.add_argument('dest', default=args.source, help="The markdown file to insert the generated ToC in.")
+    args = parser.parse_args()
+    
+    # check for valid arguments
+    assert args.source.endswith(".md"), "The source file must be a markdown file"
+    assert args.dest.endswith(".md"), "The destination file must be a markdown file"
+
+    return args.source, args.dest
 
 
 
@@ -141,3 +185,4 @@ if __name__ == "__main__":
     markdown = get_markdown("sample.md")
     headings = get_headings(markdown)
     toc = generate_toc(headings)
+    insert_toc(toc, "sample3.md")
