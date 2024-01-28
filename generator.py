@@ -118,8 +118,9 @@ def generate_toc(headings: Dict[str, int]) -> str:
             tab_space = "    " * (curr_indent - 1)
             toc_text += tab_space
             toc_text += txt
-             
+
     return toc_text
+
 
 
 def read_args() -> Tuple[str, str]:
