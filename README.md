@@ -1,4 +1,7 @@
 # Markdown-ToC-Generator
+
+<span style="color: hotpink;">(in progress) fixing indentation of ToC + ignoring document title</span>
+
 A quick-and-easy 'Table of Contents' generator for your markdown files.
 
 ### Table of Contents
