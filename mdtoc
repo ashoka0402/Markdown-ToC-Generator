@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import string
 from pathlib import Path
@@ -133,22 +135,26 @@ def insert_toc(toc_text: str, file_name: str) -> None:
         toc_text: the table of contents generated in string format
         file_name: the file where the ToC is going
     """
-    # Find where to insert toc
+    # find where to insert toc
     lines = get_markdown(file_name)
     line_num = 1
+    found = False
     
     for line in lines.splitlines():
         if line.startswith("**MD-TOC**"):
+            found = True
             break
         line_num += 1
-    
-    # Convert the string into a list of lines
-    lines = lines.splitlines()
 
-    # Insert the toc_text at the specified line number
+    if not found:
+        print("Missing **MD-TOC** in destination file.")
+        return None
+    
+    # insert the toc
+    lines = lines.splitlines()
     lines[line_num-1:line_num] = toc_text.split('\n')
 
-    # Write the modified content back to the file
+    # write and save modified file
     with open(file_name, 'w') as file:
         file.write('\n'.join(lines))
 
@@ -182,7 +188,7 @@ def read_args() -> str:
 
 if __name__ == "__main__":
     source_file, dest_file = read_args()
-    markdown = get_markdown("sample.md")
+    markdown = get_markdown(source_file)
     headings = get_headings(markdown)
     toc = generate_toc(headings)
-    insert_toc(toc, "sample3.md")
+    insert_toc(toc, dest_file)
