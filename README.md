@@ -1,21 +1,18 @@
 # Markdown-ToC-Generator
 
-<span style="color: hotpink;">(in progress) fixing indentation of ToC + ignoring document title</span>
-
 A quick-and-easy 'Table of Contents' generator for your markdown files.
 
 ### Table of Contents
-- [Markdown-ToC-Generator](#markdowntocgenerator)
-    - [Installation Guide](#installation-guide)
-        - [Download Executable](#download-executable)
-            - [Step 1](#step-1)
-                - [Step 2](#step-2)
-                - [Step 3 (optional)](#step-3-optional)
-            - [Download Python File](#download-python-file)
-        - [Usage](#usage)
-            - [Choosing ToC Location](#choosing-toc-location)
-            - [Running Generator](#running-generator)
-        - [Example](#example)
+- [Installation Guide](#installation-guide)
+    - [Download Executable](#download-executable)
+        - [Step 1](#step-1)
+        - [Step 2](#step-2)
+        - [Step 3 (optional)](#step-3-optional)
+    - [Download Python File](#download-python-file)
+- [Usage](#usage)
+    - [Choosing ToC Location](#choosing-toc-location)
+    - [Running Generator](#running-generator)
+- [Example](#example)
 
 
 <br>
@@ -97,5 +94,4 @@ python mdtoc.py <source_file> <dest_file>
 <br>
 
 ## Example
-
 

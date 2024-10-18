@@ -3,23 +3,24 @@
 import argparse
 import string
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 
 
-def get_markdown(file_name: str) -> str:
+def get_markdown(file_name: str) -> Optional[str]:
     """Opens the markdown content from the file with the
     given name, and returns its content as a single string.
 
     Args:
         file_name: name of the `.md` file to read in
     Returns:
-        the contents of the `.md` file
+        the contents of the `.md` file or None if an error occured
     """
     try:
         data = Path(file_name).read_text()
-    except:
-        print("Markdown file could not be found or opened")
-    return data
+        return data
+    except Exception as e:
+        print(e)
+        return None
 
 
 def get_headings(markdown: str) -> Dict[str, int]:
@@ -35,6 +36,7 @@ def get_headings(markdown: str) -> Dict[str, int]:
     """
     headings = dict()
     in_code_block = False
+    first_heading = True
 
     for line in markdown.splitlines():
         curr_level = 0
@@ -43,17 +45,27 @@ def get_headings(markdown: str) -> Dict[str, int]:
             in_code_block = not in_code_block
 
         if line.startswith("#") and not in_code_block:
+            # skip first heading
+            if first_heading:
+                first_heading = False
+                continue
+
+            # skip table of contents
+            if "table of contents" in line.lower():
+                continue
+
             # count how many hashtags
             for char in line:
-                if char == "#": curr_level += 1
-                else: break
+                if char == "#": 
+                    curr_level += 1
+                else: 
+                    break
 
             # remove hashtags + add to dict
             heading = line[curr_level + 1:]
             headings[heading] = curr_level
 
     return headings
-
 
 
 def format_heading(heading: str) -> str:
@@ -90,65 +102,66 @@ def format_heading(heading: str) -> str:
     return formatted
 
 
-
 def generate_toc(headings: Dict[str, int]) -> str:
     """Formats the given headers using their nesting levels
     as a guide, in order to create a Table of Contents.
 
     Args:
-        headings: each of the headings (#, ##, etc) and their nesting
+        headings: each of the headings and their nesting
         level
     Returns:
         the table of contents as a single string
     """
     toc_text = "### Table of Contents\n"
     curr_indent = 0
-
+    prev_level = 0
+    
     for heading, level in headings.items():
         txt = format_heading(heading)
-        # regular h1 headings
+        
+        # determine indent
         if level == 1:
-            toc_text += txt 
-            curr_indent = 1
+            curr_indent = 0
+        elif level > prev_level:
+            curr_indent += 1
+        elif level < prev_level:
+            curr_indent -= (prev_level - level)
+        
+        # calculate tab space 
+        tab_space = "    " * curr_indent
+        toc_text += tab_space + txt
 
-        else:
-            # determine amount of tab space for 
-            # nested layers
-            if level > curr_indent:
-                curr_indent += 1
-            elif level < curr_indent:
-                curr_indent -= 1
-            
-            tab_space = "    " * (curr_indent - 1)
-            toc_text += tab_space
-            toc_text += txt
+        # update the previous level
+        prev_level = level
 
     return toc_text
+    
 
-
-
-def insert_toc(toc_text: str, file_name: str) -> None:
+def insert_toc(toc_text: str, file_name: str) -> bool:
     """Insert the given table of contents in the file on
     the line labelled "**MD-TOC**"
 
     Args:
         toc_text: the table of contents generated in string format
         file_name: the file where the ToC is going
+    Returns:
+        True if inserted successfully, False otherwise
     """
-    # find where to insert toc
+    # setup & grab info
     lines = get_markdown(file_name)
     line_num = 1
     found = False
     
+    # find where to insert toc
     for line in lines.splitlines():
         if line.startswith("**MD-TOC**"):
             found = True
             break
         line_num += 1
-
+    
     if not found:
         print("Missing **MD-TOC** in destination file.")
-        return None
+        return False
     
     # insert the toc
     lines = lines.splitlines()
@@ -158,9 +171,10 @@ def insert_toc(toc_text: str, file_name: str) -> None:
     with open(file_name, 'w') as file:
         file.write('\n'.join(lines))
 
+    return True
 
 
-def read_args() -> str:
+def read_args() -> Tuple[str, str]:
     """Read in the command-line arguments to determine the
     source and destination file
 
@@ -181,14 +195,21 @@ def read_args() -> str:
     # check for valid arguments
     assert args.source.endswith(".md") and args.source != None, "The source file must be a markdown file"
     assert args.dest.endswith(".md") and args.dest != None, "The destination file must be a markdown file"
-
     return args.source, args.dest
 
 
-
-if __name__ == "__main__":
+def run() -> None:
+    """Runs MDTOC"""
+    # grab markdown
     source_file, dest_file = read_args()
     markdown = get_markdown(source_file)
+    if not markdown: return None
+    
+    # make table of contents
     headings = get_headings(markdown)
     toc = generate_toc(headings)
-    insert_toc(toc, dest_file)
+    if insert_toc(toc, dest_file):
+        print(f"Table of Contents generated successfully in {dest_file}")
+
+if __name__ == "__main__":
+    run()
