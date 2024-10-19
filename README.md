@@ -111,6 +111,8 @@ python mdtoc.py <source_file> <dest_file>
 
 *💡 Both `source_file` and `dest_file` can be the same if you want to insert the ToC into the same file.*
 
+<br>
+
 ## 🎨 Example
 
 Let's say you want to generate a ToC for this very README.md file. First, you would mark the location with the `MDTOC` comments like this:
