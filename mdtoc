@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-
 import argparse
 import string
 from pathlib import Path
 from typing import Dict, Tuple, Optional
-
 
 def get_markdown(file_name: str) -> Optional[str]:
     """Opens the markdown content from the file with the
@@ -104,24 +102,27 @@ def generate_toc(headings: Dict[str, int]) -> str:
     as a guide, in order to create a Table of Contents.
 
     Args:
-        headings: each of the headings and their nesting
-        level
+        headings: each of the headings and their nesting level
     Returns:
         the table of contents as a single string
     """
     toc_text = "### Table of Contents\n"
     curr_indent = 0
     prev_level = 0
-    
+
+    # handle first heading separately
+    first_heading = next(iter(headings))
+    toc_text += format_heading(first_heading)
+    del headings[first_heading]
+
     for heading, level in headings.items():
         txt = format_heading(heading)
-        
-        # determine indent
-        if level == 1:
-            curr_indent = 0
-        elif level > prev_level:
+       
+        if level > prev_level:
+            # nest
             curr_indent += 1
         elif level < prev_level:
+            # unnest
             curr_indent -= (prev_level - level)
         
         # calculate tab space 
