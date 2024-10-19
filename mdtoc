@@ -214,7 +214,7 @@ def read_args() -> tuple:
     """
     # setup parser
     parser = argparse.ArgumentParser(
-            prog='md-toc',
+            prog='mdtoc',
             description='Generates a Table of Contents (ToC) for a markdown file',
     )
 
