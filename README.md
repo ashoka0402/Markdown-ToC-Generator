@@ -4,19 +4,22 @@ _A quick and easy tool to generate a **Table of Contents** for your markdown fil
 
 ---
 
-## 📋 Table of Contents
-
-1. [🚀 Installation Guide](#-installation-guide)
-   - [✅ Step 1: Download the Executable](#-step-1-download-the-executable)
-   - [✅ Step 2: Make it Executable](#-step-2-make-it-executable)
-   - [✅ Step 3 (Optional): Global Access](#-step-3-optional-global-access)
+<!-- START OF MDTOC -->
+### Table of Contents
+- [🚀 Installation Guide](#-installation-guide)
+   - [📦 Download Executable](#-download-executable)
+      - [✅ Step 1: Download the Executable](#-step-1-download-the-executable)
+      - [✅ Step 2: Make it Executable](#-step-2-make-it-executable)
+      - [✅ Step 3 (Optional): Global Access](#-step-3-optional-global-access)
    - [🐍 Download Python Script](#-download-python-script)
-2. [🛠️ Usage Instructions](#️-usage-instructions)
-   - [🖊️ Choosing ToC Location](#️-choosing-toc-location)
-   - [⚡ Running the Generator](#-running-the-generator)
-3. [🎨 Example](#-example)
-4. [🔧 Additional Information](#-additional-information)
-5. [✨ Final Words](#-final-words)
+- [🛠️ Usage Instructions](#-usage-instructions)
+    - [🖊️ Choosing ToC Location](#-choosing-toc-location)
+    - [⚡ Running the Generator](#-running-the-generator)
+- [🎨 Example](#-example)
+- [🔧 Additional Information](#-additional-information)
+- [✨ Final Words](#-final-words)
+<!-- END OF MDTOC -->
+
 ---
 
 ## 🚀 Installation Guide
@@ -40,11 +43,7 @@ Ensure the file is executable by running the following command in the directory 
 chmod +x mdtoc
 ```
 
-#### 💡 Tip: You can check if the file is executable by running:
-
-```bash
-./mdtoc --help
-```
+> 💡 Tip: You can check if the file is executable by running `mdtoc --help`
 
 #### ✅ Step 3 (Optional): Global Access
 
@@ -75,7 +74,7 @@ Remove the first line of the file `(#!/usr/bin/env python3)` if it exists, as th
 
 Using the tool is incredibly simple! Just follow these two steps to add a **Table of Contents (ToC)** to your markdown file.
 
-#### 🖊️ Choosing ToC Location
+### 🖊️ Choosing ToC Location
 
 In the markdown file where you want to generate the Table of Contents, insert the following placeholder text:
 
@@ -87,7 +86,7 @@ In the markdown file where you want to generate the Table of Contents, insert th
 
 This is where the generator will place your beautiful ToC every time you run your code 🌟!
 
-## ⚡ Running the Generator
+### ⚡ Running the Generator
 
 Once you've added the ToC placeholder, run the generator using one of these commands:
 
@@ -103,13 +102,13 @@ mdtoc <source_file> <dest_file>
 python mdtoc.py <source_file> <dest_file>
 ```
 
-#### Explanation:
+**Explanation:**
 
 - `source_file` → The markdown file from which the Table of Contents should be generated.
 
 - `dest_file` → The markdown file where the ToC should be inserted.
 
-*💡 Both `source_file` and `dest_file` can be the same if you want to insert the ToC into the same file.*
+> 💡 Both `source_file` and `dest_file` can be the same if you want to insert the ToC into the same file.*
 
 <br>
 
