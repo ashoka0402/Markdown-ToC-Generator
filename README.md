@@ -40,7 +40,6 @@ Ensure the file is executable by running the following command in the directory 
 chmod +x mdtoc
 ```
 
-
 #### 💡 Tip: You can check if the file is executable by running:
 
 ```bash
@@ -58,7 +57,7 @@ sudo mv mdtoc /usr/bin
 *For other operating systems, check specific documentation on making a file executable globally. 🔍*
 
 
-## 🐍 Download Python Script
+### 🐍 Download Python Script
 
 If you prefer to use the generator as a Python script, follow these steps:
 
@@ -70,21 +69,23 @@ Download the mdtoc file from the repository and rename it to mdtoc.py. 📝
 
 Remove the first line of the file `(#!/usr/bin/env python3)` if it exists, as this is only needed for executables.
 
+<br>
 
 # 🛠️ Usage Instructions
 
 Using the tool is incredibly simple! Just follow these two steps to add a **Table of Contents (ToC)** to your markdown file.
-
 
 #### 🖊️ Choosing ToC Location
 
 In the markdown file where you want to generate the Table of Contents, insert the following placeholder text:
 
 ```markdown
-**MD-TOC**
+<!--START OF MDTOC-->
+
+<!--END OF MDTOC-->
 ```
 
-This is where the generator will place your beautiful ToC. 🌟 Note: If **MD-TOC** appears on the same line as text, the generator will overwrite it!
+This is where the generator will place your beautiful ToC every time you run your code 🌟!
 
 ## ⚡ Running the Generator
 
@@ -112,24 +113,28 @@ python mdtoc.py <source_file> <dest_file>
 
 ## 🎨 Example
 
-Let's say you want to generate a ToC for this very README.md file. First, you would mark the location with the **MD-TOC** placeholder like this:
+Let's say you want to generate a ToC for this very README.md file. First, you would mark the location with the `MDTOC` comments like this:
 
 ```markdown
 # Project Documentation
 
-**MD-TOC**
+<!--START OF MDTOC-->
+
+<!--END OF MDTOC-->
 
 ## Section 1: Introduction
 ...
 ```
 
-After running the generator, it would automatically generate the Table of Contents based on your file's headers:
+After running the generator, it will automatically generate the Table of Contents based on your file's headers:
 
 ```markdown
 # Project Documentation
 
+<!--START OF MDTOC-->
 - [Section 1: Introduction](#section-1-introduction)
 - [Section 2: Installation](#section-2-installation)
+<!--END OF MDTOC-->
 ...
 
 ## Section 1: Introduction
@@ -137,6 +142,8 @@ After running the generator, it would automatically generate the Table of Conten
 ```
 
 And voilà! 🎉 You now have a neatly organized and clickable ToC!
+
+<br>
 
 ## 🔧 Additional Information
 
@@ -146,6 +153,7 @@ And voilà! 🎉 You now have a neatly organized and clickable ToC!
 
 - **[Issues & Contributions](CONTRIBUTING.md):** If you encounter any issues or have ideas for improving the tool, please open a GitHub issue or submit a pull request. We welcome contributions! 🙌
 
+<br>
 
 ## ✨ Final Words
 
